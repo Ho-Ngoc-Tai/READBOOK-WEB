@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Đồ_án_của_Thái.Models.Comic>
+@{
+    ViewBag.Title = "HOME";
+}
+<h2>Home</h2>
+
+<div class="row">
+<ul style="list-style: none;">
+    @foreach (var comic in Model)
+    {
+        <li>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="margin-bottom: 5px;">
+                <div class="panel panel-default">
+                    <div class="panel panel-heading">
+                        <a href="@Url.Action("Detail", "Comics", new {id = comic.Id})">
+                            <strong>@comic.NameComic</strong>
+                        </a>
+                        <br />
+                        @if (ViewBag.LoginUser != null)
+                        {
+                            if (comic.isShowFollow)
+                            {
+                                <button data-comic-id="@comic.Id" class="btn btn-success btn-sm js-toggle-follow">Follow</button>
+                            }
+                            else
+                            {
+                                <button data-comic-id="@comic.Id" class="btn btn-danger btn-sm js-toggle-follow">UnFollow</button>
+                            }
+                        }
+                    </div>
+                    <div class="panel-body">
+                        <p><strong>Tác giả: </strong>@comic.Author</p>
+                        <p><strong>Thể loại: </strong>@comic.Category.Name</p>
+                        <div class="picture" style="text-align: center;">
+                            <a href="@Url.Action("Detail", "Comics", new {id = comic.Id})">
+                                <img src="@comic.Picture" alt="@comic.NameComic" style="width: 190px; height: 247px;" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix">
+                        <div class="pull-right">
+                            @Html.ActionLink("Đọc truyện", "Read", "Comics", new { id = comic.Id, }, new { @class = "btn btn-success" })
+                            @Html.ActionLink("Chi tiết", "Detail", "Comics", new { id = comic.Id }, new { @class = "btn btn-success" })
+                        </div>
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/follows", { comicId: button.attr("data-comic-id") })
+                    .done(function () {
+                        button.addClass("btn-danger")
+                        button.text("UnFollow")
+                        location.reload();
+                    })
+                    .fail(function () {
+                        alert("Something failed");
+                    });
+            });
+        });
+
+    </script>
+    }
+<style>
+    a:hover{
+        text-decoration: none;
+
+    }
+    a {
+        color: black;
+    }
+    .panel{
+        margin-bottom: 5px;
+    }
+    
+</style>

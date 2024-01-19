@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Đồ_án_của_Thái.Models.Chapter>
+@{
+    ViewBag.Title = "Trang Đã Lưu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh Sách Trang Đã Lưu</h2>
+<hr />
+<table style="width: 100%">
+    <tr style="text-align: center; font-weight: bold; font-size: 25px;">
+        <th style="width: 30%;">Name/Picture</th>
+        <th>Chapters</th>
+    </tr>
+    @foreach (var save in Model.GroupBy(ch => ch.ComicId))
+    {
+        <tr>
+            <td>
+                <h4>@save.First().Comic.NameComic</h4>
+                <div style="text-align: center;">
+                    <img style="width: 85px;" src="@save.First().Comic.Picture" />
+                </div>
+            </td>
+            <td>
+                @foreach (var chapter in save)
+                {
+                    <a style="font-size: 20px;" href="@Url.Action("Read", new { id = chapter.Comic.Id, page = chapter.Trang })">Trang @chapter.Trang, </a>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<style>
+    th, td {
+        border: 1px solid #dddddd;
+        padding: 5px;
+    }
+    a:hover{
+        color: #ca3433;
+        text-decoration: none;
+    }
+</style>

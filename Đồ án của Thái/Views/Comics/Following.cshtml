@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Đồ_án_của_Thái.Models.Comic>
+@{
+    ViewBag.Title = "Truyện đã follow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Truyện Đã Theo Dõi</h2>
+<div class="row">
+    <ul style="list-style: none;">
+        @foreach (var comic in Model)
+        {
+            <li>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel panel-heading">
+                            <a href="@Url.Action("Detail", "Comics", new {id = comic.Id})">
+                                <strong>@comic.NameComic</strong>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p><strong>Tác giả: </strong>@comic.Author</p>
+                        <p><strong>Thể loại: </strong>@comic.Category.Name</p>
+                        <a href="@Url.Action("Detail", "Comics", new {id = comic.Id})">
+                            <img src="@comic.Picture" alt="@comic.NameComic" style="width: 190px; height: 247px;" />
+                        </a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+<style>
+    a:hover {
+        text-decoration: none;
+    }
+    a {
+        color: black;
+    }
+    .panel {
+        margin-bottom: 5px;
+    }
+</style>

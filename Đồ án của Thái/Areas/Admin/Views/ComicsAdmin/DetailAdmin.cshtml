@@ -1,0 +1,64 @@
+﻿@model Đồ_án_của_Thái.Areas.Admin.ViewModelsAdmin.ComicDetailViewModelsAdmin
+
+@{
+    ViewBag.Title = "DetailAdmin";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";}
+
+<h2>Chi Tiết</h2>
+<div>
+    <h2>@Model.Comic.NameComic</h2>
+    <div style="display: flex; flex-basis: 50%;">
+        <div class="thumbnail" style="width: 500px;">
+            <img src="@Model.Comic.Picture" alt="Comic Picture">
+        </div>
+        <div class="title">
+            <h4>Tác giả: @Model.Comic.Author</h4>
+            <h4>Mô tả: @Model.Comic.Title</h4>
+            <h4>Thể loại: @Model.Comic.Category.Name</h4>
+            <div style="display:flex;">
+                @Html.ActionLink("Đọc truyện", "ReadAdmin", new { id = Model.Comic.Id }, new { @class = "btn btn-warning" })
+                <div style="margin-left: 8px;">
+                    @Html.ActionLink("Chỉnh sửa", "EditAdmin", new { id = Model.Comic.Id }, new { @class = "btn btn-warning" })
+                </div>
+                <div style="margin-left: 8px;">
+                    @Html.ActionLink("Trở về", "IndexAdmin", "HomeAdmin", null, new { @class = "btn btn-warning" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h3>Danh Sách Trang</h3>
+<ul style="list-style: none; display: flex; flex-wrap: wrap;">
+    @foreach (var chapter in Model.Chapters)
+    {
+        <li style="text-align: center; flex-basis: 5%;">
+            <div class="btn btn-primary">
+                <a href="@Url.Action("ReadAdmin", new { id = Model.Comic.Id, page = chapter.Trang })" class="Trang">@chapter.Trang</a>
+            </div>
+        </li>
+    }
+</ul>
+<style>
+    .thumbnail {
+        border: none;
+    }
+
+    .Trang {
+        font-size: 20px;
+        color: white;
+    }
+
+        .Trang:focus {
+            text-decoration: none;
+        }
+
+        .btn-primary:hover, .Trang:hover {
+            text-decoration: none;
+            color: red;
+        }
+
+    h4, .h4, h5, .h5, h6, .h6 {
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+</style>

@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="shortcut icon" href="~/Content/images/book.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("Index", "Home")">
+                    <img style="height: 50px;" src="~/Content/images/book-free-logo.png" alt="logo" />
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Trang Chủ", "Index", "Home", new { area = "" }, null)</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"
+                           data-toggle="dropdown"
+                           role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            Thể Loại
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <li><a href="@Url.Action("TheLoai", "Comics", new {id = category.Id})">@category.Name</a></li>
+                            }
+                        </ul>
+                    </li>
+                    
+                    <li class="search">
+                        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                        {
+                            @Html.TextBox("searchString", null, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Search..." })<button style="border-radius: 100%; height: 35px; width: 35px; padding-right: 25px;" type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        }
+                     </li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <div>
+                <hr />
+                <footer>
+                    
+                </footer>
+            </div>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+        @RenderSection("upload", required: false)
+        @RenderSection("count", required: false)
+    </body>
+</html>
+<style>
+
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+    input#searchString:focus {
+        border: 1px solid #ca3433;
+    }
+    input#searchString {
+        padding: 6px 9px;
+        border-radius: 10px;
+        border: 1px solid #ca3433;
+        width: 275px;
+        height: 32px;
+    }
+
+    /*button[type="submit"] {
+        margin-left: 12px;
+        width: 32px;
+        height: 32px;
+        border-radius: 100%;
+        background-color: hotpink;
+        border: 1px solid red;
+        padding-top: 4px;
+    }*/
+
+    li.search {
+        margin-top: 8px;
+    }
+
+    .navbar-inverse {
+/*        background: linear-gradient( to left, rgba(0, 0, 255, 1) 0%,rgba(255, 83, 0, 0.8)50%, rgba(178, 34, 34, 1 ) 100%);
+*/        background: #ca3433;
+        padding: 5px;
+    }
+
+    a.navbar-brand {
+        color: white;
+    }
+
+        a.navbar-brand:hover {
+            text-shadow: red -3px 0, cyan 3px 0;
+        }
+    .navbar-inverse .navbar-nav > li > a {
+        color: white;
+    }
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        color: #fff;
+        background-color: #ca3433;
+    }
+</style>

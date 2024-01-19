@@ -1,0 +1,71 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Đồ_án_của_Thái.Models.Chapter>
+@{
+    ViewBag.Title = "Đọc Truyện";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Đọc Truyện</h2>
+
+@foreach (var chap in Model)
+{
+    <br />
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h3>Trang @chap.Trang</h3>
+        @if (ViewBag.LoginUser != null)
+        {
+            if (chap.isShowSave)
+            {
+            <button data-comic-id="@chap.Id" class="btn btn-success js-toggle-follow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                </svg>
+                Save
+            </button>
+            }
+            else
+            {
+            <button data-comic-id="@chap.Id" class="btn btn-danger js-toggle-follow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+                    <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" />
+                </svg>
+                Saved
+            </button>
+            }
+        }
+    </div>
+    
+    <div class="center" style="text-align: center;">
+        <p><img src="@chap.PictureChap" alt="Ảnh Chap" style="width: 470px"></p>
+    </div>
+}
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Read", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index", "Home", null, new { @class = "btn btn-warning" })
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/saves", { chapterId: button.attr("data-comic-id") })
+                    .done(function () {
+                        button.addClass("btn-danger")
+                        button.text("Saved")
+                        location.reload();
+                    })
+                    .fail(function () {
+                        alert("Something failed");
+                    });
+            });
+        });
+
+    </script>
+}
+<style>
+    .pagination-container {
+        text-align: center;
+    }
+</style>

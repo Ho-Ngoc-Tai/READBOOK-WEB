@@ -1,0 +1,27 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Đồ_án_của_Thái.Areas.Admin.Models.Chapter>
+@{
+    ViewBag.Title = "ReadAdmin";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";}
+
+<h2>ReadAdmin</h2>
+@foreach (var chap in Model)
+{
+    <div>
+        <h3>Trang: @chap.Trang</h3>
+    </div>
+    <div class="center" style="text-align: center;">
+        <p><img src="@chap.PictureChap" alt="Ảnh Chap" style="width: 470px"></p>
+    </div>
+}
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("ReadAdmin", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+<div>
+    @Html.ActionLink("Back to List", "IndexAdmin", "HomeAdmin", null, new { @class = "btn btn-warning" })
+</div>
+<style>
+    .pagination-container {
+        text-align: center;
+    }
+</style>
